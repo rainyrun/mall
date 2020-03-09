@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.rainyrun.mall.dao.mapper.SearchMapper">
+	<select id="getSearchItemList" resultType="top.rainyrun.mall.dao.pojo.SearchItem">
+		select
+			item.id,
+			item.title,
+			item.price,
+			item.image,
+			cat.name as catName,
+			idesc.item_desc as itemDesc
+		from mall_item item,
+			mall_item_cat cat,
+			mall_item_desc idesc
+		where item.cid = cat.id
+		and item.id = idesc.item_id
+		limit 100;
+	</select>
+	
+	<select id="getSearchItemById" parameterType="Long" resultType="top.rainyrun.mall.dao.pojo.SearchItem">
+		select
+			item.id,
+			item.title,
+			item.price,
+			item.image,
+			cat.name as catName,
+			idesc.item_desc as itemDesc
+		from mall_item item,
+			mall_item_cat cat,
+			mall_item_desc idesc
+		where item.cid = cat.id
+		and item.id = idesc.item_id
+		and item.id = #{id};
+	</select>
+</mapper>

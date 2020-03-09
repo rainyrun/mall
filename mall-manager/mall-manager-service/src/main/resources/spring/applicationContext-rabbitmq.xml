@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+	<!-- 配置连接工厂 -->
+	<rabbit:connection-factory
+		id="connectionFactory" host="${rmq.ip}" username="${rmq.manager.user}"
+		password="${rmq.manager.password}" port="${rmq.port}" />
+
+	<!-- 声明消息队列管理员管理该连接工厂 -->
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!-- 声明消息队列，消息系统监听队列 -->
+	<rabbit:queue id="messageQueue" durable="true"
+		auto-delete="false" exclusive="false" name="messageQueue" />
+	<rabbit:queue id="searchQueue" durable="true"
+		auto-delete="false" exclusive="false" name="searchQueue" />
+	<rabbit:queue id="cartQueue" durable="true"
+		auto-delete="false" exclusive="false" name="cartQueue" />
+
+	<!-- 交换机 绑定 队列 -->
+	<rabbit:fanout-exchange name="messageExchange"
+		durable="true" auto-delete="false" id="messageExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="messageQueue" />
+			<rabbit:binding queue="searchQueue" />
+			<rabbit:binding queue="cartQueue" />
+		</rabbit:bindings>
+	</rabbit:fanout-exchange>
+
+	<!-- AmqpTemplate -->
+	<rabbit:template id="rabbitTemplate"
+		exchange="messageExchange" connection-factory="connectionFactory" />
+
+</beans>

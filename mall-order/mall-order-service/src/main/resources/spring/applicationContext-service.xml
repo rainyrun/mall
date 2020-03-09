@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://dubbo.apache.org/schema/dubbo
+        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+	<context:component-scan
+		base-package="top.rainyrun.mall.order.service"></context:component-scan>
+
+	<!-- 注入服务 -->
+	<bean id="orderService"
+		class="top.rainyrun.mall.order.service.impl.OrderServiceImpl"></bean>
+
+	<!-- 注册到dubbo -->
+	<dubbo:application name="mall-order-service" />
+	<dubbo:registry protocol="zookeeper"
+		address="${DUBBO_REGISTY_ADDRESS}" />
+	<dubbo:protocol name="dubbo" port="${DUBBO_PORT}" />
+	<dubbo:service
+		interface="top.rainyrun.mall.order.service.OrderService"
+		ref="orderService" />
+</beans>
