@@ -17,7 +17,7 @@
 		<tomcat.url>***</tomcat.url>
 
 		<!-- 集中定义依赖版本 -->
-		<spring.version>5.1.8.RELEASE</spring.version>
+		<spring.version>5.3.18</spring.version>
 		<jstl.version>1.2</jstl.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<jsp-api.version>2.0</jsp-api.version>
